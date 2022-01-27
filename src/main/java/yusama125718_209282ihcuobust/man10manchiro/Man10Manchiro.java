@@ -15,7 +15,7 @@ import static java.lang.Integer.parseInt;
 
 public final class Man10Manchiro extends JavaPlugin
 {
-    public static Player fathername;
+    public static UUID fathername;
     public static double betvalue;
     static boolean operation = false;
     static boolean activegame = false;
@@ -116,7 +116,7 @@ public final class Man10Manchiro extends JavaPlugin
                         {
                             if (activegame)
                             {
-                                if (!(((Player) sender).getUniqueId() == ((Player) fathername).getUniqueId())||childplayer.contains(sender.getName()))
+                                if (!(((Player) sender).getUniqueId() == fathername)||childplayer.contains(sender.getName()))
                                 {
                                     if (vaultapi.getBalance(((Player) sender).getUniqueId()) > betvalue)
                                     {
@@ -126,7 +126,7 @@ public final class Man10Manchiro extends JavaPlugin
                                             sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
                                         }
                                         vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue);
-                                        childplayer.add(UUID.fromString(sender.getName()));
+                                        childplayer.add(((Player) sender).getUniqueId());
                                         sitperson = sitperson + 1;
                                     }
                                     else
@@ -191,7 +191,7 @@ public final class Man10Manchiro extends JavaPlugin
                                                                     player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
                                                                 }
                                                             }
-                                                            fathername = ((Player) sender);
+                                                            fathername = ((Player) sender).getUniqueId();
                                                             return true;
                                                         }
                                                         else
@@ -256,7 +256,7 @@ public final class Man10Manchiro extends JavaPlugin
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
                             return true;
@@ -266,7 +266,7 @@ public final class Man10Manchiro extends JavaPlugin
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
                             sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
                             return true;
                         }
                     }

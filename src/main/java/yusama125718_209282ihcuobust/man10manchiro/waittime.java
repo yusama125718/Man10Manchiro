@@ -8,7 +8,7 @@ import static yusama125718_209282ihcuobust.man10manchiro.Man10Manchiro.*;
 public class waittime extends Thread
 {
     @Override
-    public void start()
+    public void run()
     {
         loop: for (int i = 0; i < 6; i++)
         {
@@ -32,7 +32,7 @@ public class waittime extends Thread
             {
                 if (!dissableplayers.contains(player.getUniqueId()))
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(String.valueOf(fathername)).getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！残り" + (120 - i * 20) + "秒");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(fathername).getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！残り" + (120 - i * 20) + "秒");
                 }
             }
         }
@@ -43,10 +43,18 @@ public class waittime extends Thread
         }
         else
         {
-            vaultapi.deposit(((Player) fathername).getUniqueId(),betvalue * playerperson);
+            vaultapi.deposit(fathername,betvalue * playerperson);
             for (int i = 0;i == playerperson;i++)
             {
                 vaultapi.deposit((childplayer.get(i)),betvalue);
+            }
+            operation = false;
+            for (Player player: Bukkit.getOnlinePlayers())
+            {
+                if (!dissableplayers.contains(player.getUniqueId()))
+                {
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§f§l" + Bukkit.getOfflinePlayer(fathername).getName() + "の部屋は人が集まらなかったので解散しました");
+                }
             }
         }
     }
