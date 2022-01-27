@@ -1,0 +1,15 @@
+name: Man10Manchiro
+version: '${project.version}'
+main: yusama125718_209282ihcuobust.man10manchiro.Man10Manchiro
+api-version: 1.17
+
+commands:
+  mcr:
+    description: manchiro
+    usage: /<command> [text] [text] [text]
+
+permissions:
+  mcr.op:
+    default: op
+  mcr.player:
+    default: true
