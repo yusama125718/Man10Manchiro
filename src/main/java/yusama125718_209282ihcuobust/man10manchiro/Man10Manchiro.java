@@ -26,12 +26,13 @@ public final class Man10Manchiro extends JavaPlugin
     static int sitperson = 0;
     static public List<UUID> childplayer = new ArrayList<>();
     public static JavaPlugin manchiro;
-    public static VaultAPI vaultapi = new VaultAPI();
+    public static VaultAPI vaultapi;
 
     @Override
     public void onEnable()
     {
         // Plugin startup logic
+        vaultapi = new VaultAPI();
         this.manchiro = this;
     }
 
