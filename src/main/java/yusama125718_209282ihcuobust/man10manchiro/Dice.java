@@ -1,6 +1,5 @@
 package yusama125718_209282ihcuobust.man10manchiro;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import static yusama125718_209282ihcuobust.man10manchiro.Game.outnumber;
@@ -13,7 +12,7 @@ public class Dice extends Thread
     {
         loop: for (int i = 0; i < 3; i++)
         {
-            for (int i2 = 0; i2 < 3; i2++) //親のダイスロール
+            for (int i2 = 0; i2 < 3; i2++)
             {
                 Random dicerondom = new Random();
                 int diceoutnumber = dicerondom.nextInt(6) + 1;
@@ -57,6 +56,7 @@ public class Dice extends Thread
                     }
                 }
             }
+            yaku = 0;
             Yaku yakuthread = new Yaku();
             yakuthread.start();
             try
@@ -70,7 +70,10 @@ public class Dice extends Thread
 
             if (!(yaku == 0))
             {
-                break loop;
+                if (!(yaku == 2))
+                {
+                    break loop;
+                }
             }
         }
     }

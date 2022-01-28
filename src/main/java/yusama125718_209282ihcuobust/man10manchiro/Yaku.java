@@ -1,7 +1,5 @@
 package yusama125718_209282ihcuobust.man10manchiro;
 
-import java.util.ArrayList;
-
 import static yusama125718_209282ihcuobust.man10manchiro.Game.*;
 
 public class Yaku extends Thread

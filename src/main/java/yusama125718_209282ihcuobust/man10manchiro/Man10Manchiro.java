@@ -1,7 +1,5 @@
 package yusama125718_209282ihcuobust.man10manchiro;
 
-import com.google.common.collect.ForwardingMapEntry;
-import net.md_5.bungee.chat.SelectorComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -127,7 +125,19 @@ public final class Man10Manchiro extends JavaPlugin
                                         }
                                         vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue);
                                         childplayer.add(((Player) sender).getUniqueId());
+                                        for (Player player: Bukkit.getOnlinePlayers())
+                                        {
+                                            if (childplayer.contains(player.getUniqueId()))
+                                            {
+                                                player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
+                                            }
+                                            if(player.getUniqueId() == fathername)
+                                            {
+                                                player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
+                                            }
+                                        }
                                         sitperson = sitperson + 1;
+                                        return true;
                                     }
                                     else
                                     {

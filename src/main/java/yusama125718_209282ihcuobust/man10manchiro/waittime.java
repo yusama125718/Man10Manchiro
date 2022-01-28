@@ -49,6 +49,7 @@ public class waittime extends Thread
                 vaultapi.deposit((childplayer.get(i)),betvalue);
             }
             operation = false;
+            activegame = false;
             for (Player player: Bukkit.getOnlinePlayers())
             {
                 if (!dissableplayers.contains(player.getUniqueId()))
