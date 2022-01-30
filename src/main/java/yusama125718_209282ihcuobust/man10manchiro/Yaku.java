@@ -32,8 +32,8 @@ public class Yaku extends Thread
                             }
                             case 3:
                             {
-                                yaku = 13;
-                                yakuname = "イチのサン";
+                                yaku = 5;
+                                yakuname = "dan5";
                                 break yakuhanntei;
                             }
                             case 4:
@@ -62,8 +62,8 @@ public class Yaku extends Thread
                         {
                             case 2:
                             {
-                                yaku = 11;
-                                yakuname = "ニのイチ";
+                                yaku = 5;
+                                yakuname = "dan5";
                                 break yakuhanntei;
                             }
                             case 3:
@@ -74,7 +74,7 @@ public class Yaku extends Thread
                             }
                             default:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -90,9 +90,15 @@ public class Yaku extends Thread
                                 yakuname = "サンのイチ";
                                 break yakuhanntei;
                             }
+                            case 6:
+                            {
+                                yaku = 100;
+                                yakuname = "man10";
+                                break yakuhanntei;
+                            }
                             default:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -108,9 +114,15 @@ public class Yaku extends Thread
                                 yakuname = "ヨンのイチ";
                                 break yakuhanntei;
                             }
+                            case 5:
+                            {
+                                yaku = 100;
+                                yakuname = "man10";
+                                break yakuhanntei;
+                            }
                             default:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -128,7 +140,7 @@ public class Yaku extends Thread
                             }
                             case 6:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -176,8 +188,8 @@ public class Yaku extends Thread
                             }
                             case 6:
                             {
-                                yaku = 16;
-                                yakuname = "二のロク";
+                                yaku = 100;
+                                yakuname = "man10";
                                 break yakuhanntei;
                             }
                         }
@@ -192,9 +204,15 @@ public class Yaku extends Thread
                                 yakuname = "サンのニ";
                                 break yakuhanntei;
                             }
+                            case 5:
+                            {
+                                yaku = 100;
+                                yakuname = "man10";
+                                break yakuhanntei;
+                            }
                             default:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -206,13 +224,13 @@ public class Yaku extends Thread
                         {
                             case 4:
                             {
-                                yaku = 12;
-                                yakuname = "ヨンのニ";
+                                yaku = 100;
+                                yakuname = "man10";
                                 break yakuhanntei;
                             }
                             default:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -230,7 +248,7 @@ public class Yaku extends Thread
                             }
                             case 6:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -260,8 +278,8 @@ public class Yaku extends Thread
                             }
                             case 4:
                             {
-                                yaku = 14;
-                                yakuname = "サンのヨン";
+                                yaku = 100;
+                                yakuname = "man10";
                                 break yakuhanntei;
                             }
                             case 5:
@@ -290,7 +308,7 @@ public class Yaku extends Thread
                             }
                             default:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -308,7 +326,7 @@ public class Yaku extends Thread
                             }
                             case 6:
                             {
-                                yaku = 2;
+                                yaku = 3;
                                 yakuname = "役無し";
                                 break yakuhanntei;
                             }
@@ -409,7 +427,7 @@ public class Yaku extends Thread
             case 6:
             {
                 yaku = 106;
-                yakuname = "ロクのゾロ目";
+                yakuname = "マンコロリン";
                 break yakuhanntei;
             }
         }

@@ -13,6 +13,8 @@ permissions:
     default: op
   mcr.player:
     default: true
+  mcr.father:
+    default: op
 
 depend:
   - Vault

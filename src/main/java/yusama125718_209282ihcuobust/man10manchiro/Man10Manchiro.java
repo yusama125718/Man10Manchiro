@@ -13,7 +13,7 @@ import static java.lang.Integer.parseInt;
 
 public final class Man10Manchiro extends JavaPlugin
 {
-    public static UUID fathername;
+    public static UUID parentname;
     public static double betvalue;
     static boolean operation = false;
     static boolean activegame = false;
@@ -30,270 +30,251 @@ public final class Man10Manchiro extends JavaPlugin
     public void onEnable()
     {
         // Plugin startup logic
-        vaultapi = new VaultAPI();
         this.manchiro = this;
+        saveDefaultConfig();
+        MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
+        mysql.execute("create detabase mcr_data");
+        mysql.execute("create table manchiro_finish (starttime varchar, endtime varchar, betvalue int, taxprice int, parent varchar, parentuuid varchar, parentyaku varchar, parentwin int, child1 varchar, child1uuid varchar, child1yaku varchar, child1win int, child2 varchar, child2uuid varchar, child2yaku varchar, child2win int, child3 varchar, child3uuid varchar, child3yaku varchar, child3win int, child4 varchar, child4uuid varchar, child4yaku varchar, child4win int, child5 varchar, child5uuid varchar, child5yaku varchar, child5win int,)");
+        vaultapi = new VaultAPI();
+        ongame = manchiro.getConfig().getBoolean("canPlay");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if (sender instanceof Player)
-        {
-            Player playerid = (Player) sender;
-            if (sender.hasPermission("mcr.player"))
-            {
-                switch (args.length)
-                {
-                    case 1:
-                    {
-                        if (args[0].equals("help"))
-                        {
-                            if (sender.hasPermission("mcr.op"))
-                            {
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
-                                return true;
-                            }
-                            else
-                            {
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                                return true;
-                            }
-                        }
-                        if (args[0].equals("hide"))
-                        {
-                            if (dissableplayers.contains(playerid.getUniqueId()))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                dissableplayers.add(playerid.getUniqueId());
-                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l非表示にします");
-                                return true;
-                            }
-                        }
-
-                        if (args[0].equals("show"))
-                        {
-                            if (dissableplayers.contains(playerid.getUniqueId()))
-                            {
-                                dissableplayers.remove(playerid.getUniqueId());
-                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
-
-                                return true;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                        if (sender.hasPermission("mcr.op"))
-                        {
-                            if (args[0].equals("on"))
-                            {
-                                ongame = true;
-                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§lonにしました");
-                                return true;
-                            }
-                            if (args[0].equals("off"))
-                            {
-                                ongame = false;
-                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§loffにしました");
-                                return true;
-                            }
-                        }
-                        if (args[0].equals("join"))
-                        {
-                            if (activegame)
-                            {
-                                if (!(((Player) sender).getUniqueId() == fathername)||childplayer.contains(sender.getName()))
-                                {
-                                    if (vaultapi.getBalance(((Player) sender).getUniqueId()) > betvalue)
-                                    {
-                                        if (dissableplayers.contains(playerid.getUniqueId()))
-                                        {
-                                            dissableplayers.remove(playerid.getUniqueId());
-                                            sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
-                                        }
-                                        vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue);
-                                        childplayer.add(((Player) sender).getUniqueId());
-                                        for (Player player: Bukkit.getOnlinePlayers())
-                                        {
-                                            if (childplayer.contains(player.getUniqueId()))
-                                            {
-                                                player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
-                                            }
-                                            if(player.getUniqueId() == fathername)
-                                            {
-                                                player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
-                                            }
-                                        }
-                                        sitperson = sitperson + 1;
-                                        return true;
-                                    }
-                                    else
-                                    {
-                                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§l所持金が足りません！");
-                                        return true;
-                                    }
-                                }
-                                else
-                                {
-                                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§lあなたはすでに参加しています！");
-                                    return true;
-                                }
-                            }
-                            else
-                            {
-                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数がいっぱいかゲームが開かれていません");
-                                return true;
-                            }
-                        }
-                    }
-                    case 3:
-                    {
-                        if (args[0].equals("start"))
-                        {
-                            if (ongame)
-                            {
-                                if (!operation)
-                                {
-                                    boolean isNumeric = args[1].matches("-?\\d+");
-                                    if (isNumeric)
-                                    {
-                                        boolean isNumeric1 = args[1].matches("-?\\d+");
-                                        if (isNumeric1)
-                                        {
-                                            betvalue = Double.parseDouble(args[1]);
-                                            if (betvalue >= 1000)
-                                            {
-                                                playerperson = parseInt(args[2]);
-                                                if (playerperson >= 1)
-                                                {
-                                                    if (playerperson <= 5)
-                                                    {
-                                                        if (vaultapi.getBalance(((Player) sender).getUniqueId()) > betvalue * playerperson)
-                                                        {
-                                                            operation = true;
-                                                            activegame = true;
-                                                            vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue * playerperson);
-
-                                                            waittime wait = new waittime();
-                                                            wait.start();
-
-                                                            if (dissableplayers.contains(playerid.getUniqueId()))
-                                                            {
-                                                                dissableplayers.remove(playerid.getUniqueId());
-                                                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
-                                                            }
-                                                            for (Player player: Bukkit.getOnlinePlayers())
-                                                            {
-                                                                if (!dissableplayers.contains(player.getUniqueId()))
-                                                                {
-                                                                    player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
-                                                                }
-                                                            }
-                                                            fathername = ((Player) sender).getUniqueId();
-                                                            return true;
-                                                        }
-                                                        else
-                                                        {
-                                                            sender.sendMessage("§l[§e§lManchiro§f§l]§r§l所持金が足りません！");
-                                                            return true;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は5人以下にしてください");
-                                                        return true;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は1人以上にしてください");
-                                                    return true;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は1000円以上にしてください");
-                                                return true;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は数字にしてください");
-                                            return true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は数字にしてください");
-                                        return true;
-                                    }
-                                }
-                                else
-                                {
-                                    sender.sendMessage(("§l[§e§lManchiro§f§l]現在ゲーム中です"));
-                                    return true;
-                                }
-
-                            }
-                            else
-                            {
-                                sender.sendMessage(("§l[§e§lManchiro§f§l]現在マンチロはoffです"));
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            sender.sendMessage(("§l[§e§lManchiro§f§l]/mcr help でコマンドを確認できます"));
-                            return true;
-                        }
-                    }
-                    default:
-                    {
-                        if (sender.hasPermission("mcr.op"))
-                        {
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
-                            return true;
-                        }
-                        else
-                        {
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                            sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                            return true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                sender.sendMessage(("§c[manchiro]You don't have permissions!"));
-                return true;
-            }
-        }
-        else
+        if (!(sender instanceof Player))
         {
             sender.sendMessage(("§c[manchiro]Player以外は実行できません"));
             return true;
         }
+        Player playerid = (Player) sender;
+        if (!(sender.hasPermission("mcr.player")))
+        {
+            sender.sendMessage(("§c[manchiro]You don't have permissions!"));
+            return true;
+        }
+        switch (args.length)
+        {
+            case 1:
+            {
+                if (args[0].equals("help"))
+                {
+                    double jackpot = manchiro.getConfig().getDouble("jackpot");
+                    if (sender.hasPermission("mcr.op"))
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
+                        return true;
+                    }
+                    else
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
+                        return true;
+                    }
+                }
+                if (args[0].equals("hide"))
+                {
+                    if (dissableplayers.contains(playerid.getUniqueId()))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        dissableplayers.add(playerid.getUniqueId());
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l非表示にします");
+                        return true;
+                    }
+                }
+
+                if (args[0].equals("show"))
+                {
+                    if (dissableplayers.contains(playerid.getUniqueId()))
+                    {
+                        dissableplayers.remove(playerid.getUniqueId());
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
+
+                        return true;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                if (sender.hasPermission("mcr.op"))
+                {
+                    if (args[0].equals("on"))
+                    {
+                        ongame = true;
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§lonにしました");
+                        return true;
+                    }
+                    if (args[0].equals("off"))
+                    {
+                        ongame = false;
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§loffにしました");
+                        return true;
+                    }
+                }
+                if (args[0].equals("join"))
+                {
+                    if (!activegame)
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数がいっぱいかゲームが開かれていません");
+                        return true;
+                    }
+                    if ((((Player) sender).getUniqueId() == parentname)&&!(childplayer.contains(sender.getName())))
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§lあなたはすでに参加しています！");
+                        return true;
+                    }
+                    if (!(vaultapi.getBalance(((Player) sender).getUniqueId()) > betvalue))
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§l所持金が足りません！");
+                        return true;
+                    }
+                    if (dissableplayers.contains(playerid.getUniqueId()))
+                    {
+                        dissableplayers.remove(playerid.getUniqueId());
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
+                    }
+                    vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue);
+                    childplayer.add(((Player) sender).getUniqueId());
+                    for (Player player: Bukkit.getOnlinePlayers())
+                    {
+                        if (childplayer.contains(player.getUniqueId()))
+                        {
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
+                        }
+                        if(player.getUniqueId() == parentname)
+                        {
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
+                        }
+                    }
+                    sitperson = sitperson + 1;
+                    return true;
+                }
+            }
+            case 3:
+            {
+                if (!(args[0].equals("start")))
+                {
+                    sender.sendMessage(("§l[§e§lManchiro§f§l]/mcr help でコマンドを確認できます"));
+                    return true;
+                }
+                if (!(sender.hasPermission("mcr.parent")))
+                {
+                    sender.sendMessage(("§c[manchiro]You don't have permissions!"));
+                    return true;
+                }
+                if (!ongame)
+                {
+                    sender.sendMessage(("§l[§e§lManchiro§f§l]現在マンチロはoffです"));
+                    return true;
+                }
+                if (operation)
+                {
+                    sender.sendMessage(("§l[§e§lManchiro§f§l]現在ゲーム中です"));
+                    return true;
+                }
+                boolean isNumeric = args[1].matches("-?\\d+");
+                if (!isNumeric)
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は数字にしてください");
+                    return true;
+                }
+                boolean isNumeric1 = args[1].matches("-?\\d+");
+                if (!isNumeric1)
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は数字にしてください");
+                    return true;
+                }
+                betvalue = Double.parseDouble(args[1]);
+                double minrate = manchiro.getConfig().getDouble("minRate");
+                if (!(betvalue >= minrate))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は"+ minrate +"円以上にしてください");
+                    return true;
+                }
+                double maxrate = manchiro.getConfig().getDouble("maxRate");
+                if (!(betvalue <= maxrate))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は"+ minrate +"円以下にしてください");
+                    return true;
+                }
+                playerperson = parseInt(args[2]);
+                if (!(playerperson >= 1))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は1人以上にしてください");
+                    return true;
+                }
+                if (!(playerperson <= 5))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は5人以下にしてください");
+                    return true;
+                }
+                if (!(vaultapi.getBalance(((Player) sender).getUniqueId()) > betvalue * playerperson))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§l所持金が足りません！");
+                    return true;
+                }
+                operation = true;
+                activegame = true;
+                vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue * playerperson);
+
+                waittime wait = new waittime();
+                wait.start();
+
+                if (dissableplayers.contains(playerid.getUniqueId()))
+                {
+                    dissableplayers.remove(playerid.getUniqueId());
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
+                }
+                for (Player player: Bukkit.getOnlinePlayers())
+                {
+                    if (!dissableplayers.contains(player.getUniqueId()))
+                    {
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
+                    }
+                }
+                parentname = ((Player) sender).getUniqueId();
+                return true;
+            }
+            default:
+            {
+                double jackpot = manchiro.getConfig().getDouble("jackpot");
+                if (sender.hasPermission("mcr.op"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
+                    return true;
+                }
+                else
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
+                    return true;
+                }
+            }
+        }
     }
+
 
     @Override
     public void onDisable() {

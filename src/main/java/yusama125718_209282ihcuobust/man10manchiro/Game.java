@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static yusama125718_209282ihcuobust.man10manchiro.Man10Manchiro.*;
 
@@ -18,10 +19,65 @@ public class Game extends Thread
     }
     static ArrayList<Integer> outnumber = new ArrayList<>();
     public static int k = 0;
+    public static int[] childyaku = new int[5];
+    static int parentyaku;
+    static double parentprice = 0;
+    static double[] childprice = new double[5];
+    double jackpot;
+    double tax = manchiro.getConfig().getDouble("tax");
+    static  double taxprice = 0;
 
     @Override
     public void run()
     {
+        Random dicerondom = new Random();
+        int shonben = dicerondom.nextInt(1000);
+        if (shonben == 0)
+        {
+            parentyaku = 2;
+            parentprice = (betvalue / 5 * 4);
+            for (int l=0;l<playerperson;l++)
+            {
+                childprice[l] = (betvalue / 5 + betvalue - tax * betvalue);
+            }
+            for (Player player: Bukkit.getOnlinePlayers())
+            {
+                if (!dissableplayers.contains(player.getUniqueId()))
+                {
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親のターン");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§lダイスを振っています...");
+                    try
+                    {
+                        Thread.sleep(2000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§7お...おい...茶碗から出たぞ...");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§7これって...");
+                    try
+                    {
+                        Thread.sleep(1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:1倍)");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§e§lションベン§f§lをして子が" + childprice[0] + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
+                }
+            }
+            vaultapi.deposit(parentname,parentprice);
+            for (int i = 0;i < playerperson;i++)
+            {
+                vaultapi.deposit((childplayer.get(i)),childprice[i]);
+            }
+            taxprice = tax * betvalue;
+            Finish finish = new Finish();
+            finish.start();
+            return;
+        }
         Dice dicethread = new Dice();
         dicethread.start();
         try
@@ -33,7 +89,7 @@ public class Game extends Thread
             e.printStackTrace();
         }
 
-        int fathersyaku = yaku;
+        parentyaku = yaku;
         yaku = 0;
         for (Player player: Bukkit.getOnlinePlayers())
         {
@@ -55,7 +111,7 @@ public class Game extends Thread
         {
             if (!dissableplayers.contains(player.getUniqueId()))
             {
-                player.sendMessage("§l[§e§lManchiro§f§l]§r§e§lチンチロリン♪" + outnumber.get(0) + " , " + outnumber.get(1) + " , " + outnumber.get(2) + "！");
+                player.sendMessage("§l[§e§lManchiro§f§l]§r§e§lチンチロリン♪§f§l" + outnumber.get(0) + " , " + outnumber.get(1) + " , " + outnumber.get(2) + "！");
                 player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l" + yakuname + "！！！");
             }
         }
@@ -68,75 +124,135 @@ public class Game extends Thread
         {
             e.printStackTrace();
         }
-        switch (fathersyaku)
+        switch (parentyaku)
         {
             case 111:
+            {
+                jackpot = manchiro.getConfig().getDouble("jackpot");
+                if (betvalue * 10 >= jackpot)
+                {
+                    parentprice = jackpot - tax * betvalue;
+                }
+                else
+                {
+                    parentprice = betvalue * 10 - tax * betvalue;
+                }
+                for (int l=0;l<5;l++)
+                {
+                    childprice[l] = 0;
+                }
+                for (Player player: Bukkit.getOnlinePlayers())
+                {
+                    if (!dissableplayers.contains(player.getUniqueId()))
+                    {
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(ジャックポット)");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§c§l"+yakuname+"§f§lを出して" + parentprice + "円獲得しました！§7(手数料"+(tax * betvalue)+"円)");
+                    }
+                }
+                vaultapi.deposit(parentname,parentprice);
+                jackpot = jackpot - parentprice - tax * betvalue;
+                taxprice = tax * betvalue;
+                manchiro.getConfig().set("jackpot",jackpot);
+                manchiro.saveConfig();
+                Finish finish = new Finish();
+                finish.start();
+                return;
+            }
+            case 106:
             {
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
                     if (!dissableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:5倍)");
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(fathername).getName() + "が§e§lピンゾロ§f§lを出して" + (betvalue * playerperson + betvalue) + "円獲得しました！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l全員没収");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§c§l"+yakuname+"§f§lを出して没収されました！");
                     }
                 }
-                vaultapi.deposit(fathername,betvalue * playerperson + betvalue);
+                parentprice = 0;
+                for (int l=0;l<playerperson;l++)
+                {
+                    childprice[l] = 0;
+                }
+                jackpot = manchiro.getConfig().getDouble("jackpot");
+                jackpot = jackpot + betvalue * sitperson;
+                manchiro.getConfig().set("jackpot",jackpot);
+                manchiro.saveConfig();
                 Finish finish = new Finish();
                 finish.start();
                 return;
             }
+            case 100:
             case 45:
             {
+                parentprice = (betvalue / 5 * 2 * playerperson + betvalue - tax * betvalue);
+                for (int l=0;l<5;l++)
+                {
+                    childprice[l] = (betvalue / 5 * 3);
+                }
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
                     if (!dissableplayers.contains(player.getUniqueId()))
                     {
                         player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:2倍)");
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(fathername).getName() + "が§e§lシゴロ§f§lを出して" + (betvalue / 5 * 2 * playerperson + betvalue) + "円獲得しました！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§c§l"+yakuname+"§f§lを出して" + (betvalue / 5 * 2 * playerperson + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                     }
                 }
-                vaultapi.deposit(fathername,betvalue / 5 * 2 * playerperson + betvalue);
+                vaultapi.deposit(parentname,parentprice);
                 for (int i = 0;i == playerperson;i++)
                 {
                     vaultapi.deposit((childplayer.get(i)),betvalue / 5 * 3);
                 }
+                taxprice = tax * betvalue;
                 Finish finish = new Finish();
                 finish.start();
                 return;
             }
-            case 2:
+            case 3:
             {
+                parentprice = (betvalue / 5 * 4);
+                for (int l=0;l<5;l++)
+                {
+                    childprice[l] = (betvalue / 5 * 1 + betvalue - tax * betvalue);
+                }
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
                     if (!dissableplayers.contains(player.getUniqueId()))
                     {
                         player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:1倍)");
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(fathername).getName() + "が§e§l役無し§f§lを出して子が" + (betvalue / 5 * 1 + betvalue) + "円獲得しました！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§c§l"+yakuname+"§f§lを出して子が" + childprice[0] + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                     }
                 }
-                vaultapi.deposit(fathername,betvalue / 5 * 4);
+                vaultapi.deposit(parentname,parentprice);
                 for (int i = 0;i < playerperson;i++)
                 {
-                    vaultapi.deposit((childplayer.get(i)),betvalue / 5 * 1 + betvalue);
+                    vaultapi.deposit((childplayer.get(i)),childprice[i]);
                 }
+                taxprice = tax * betvalue;
                 Finish finish = new Finish();
                 finish.start();
                 return;
             }
+            case 5:
             case 1:
             {
+                parentprice = (betvalue / 5 * 3);
+                for (int l=0;l<5;l++)
+                {
+                    childprice[l] = (betvalue / 5 * 2 + betvalue - tax * betvalue);
+                }
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
                     if (!dissableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:1倍)");
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(fathername).getName() + "が§e§lヒフミ§f§lを出して子が" + (betvalue / 5 * 2 + betvalue) + "円獲得しました！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:2倍)");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§c§l"+yakuname+"§f§lを出して子が" + childprice[0] + "円獲得しました！§7(手数料"+(tax * betvalue)+"円)");
                     }
                 }
-                vaultapi.deposit(fathername,betvalue / 5 * 3);
+                taxprice = tax * betvalue;
+                vaultapi.deposit(parentname,parentprice);
                 for (int i = 0;i == playerperson;i++)
                 {
-                    vaultapi.deposit((childplayer.get(i)),betvalue / 5 * 2 + betvalue);
+                    vaultapi.deposit((childplayer.get(i)),childprice[i]);
                 }
                 Finish finish = new Finish();
                 finish.start();
@@ -160,6 +276,48 @@ public class Game extends Thread
         }
         for (k = 0;k < playerperson;k++)         //子の処理
         {
+            Random dicerondom1 = new Random();
+            int shonben1 = dicerondom1.nextInt(1000);
+            if (shonben1 == 0)
+            {
+                childyaku[k] = 2;
+                parentprice = (parentprice + betvalue / 5 + betvalue - tax * betvalue);
+                childprice[k] = (betvalue / 5 * 4);
+                for (Player player: Bukkit.getOnlinePlayers())
+                {
+                    if (!dissableplayers.contains(player.getUniqueId()))
+                    {
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親のターン");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§lダイスを振っています...");
+                        try
+                        {
+                            Thread.sleep(2000);
+                        }
+                        catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§7お...おい...茶碗から出たぞ...");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§7これって...");
+                        try
+                        {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:1倍)");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§lションベン§f§lをして子が" + childprice[0] + "円獲得しました！§7(手数料"+(tax * betvalue)+"円)");
+                    }
+                }
+                vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                vaultapi.deposit(parentname,betvalue / 5 + betvalue - tax * betvalue);
+                taxprice = taxprice + tax * betvalue;
+                Finish finish = new Finish();
+                finish.start();
+                return;
+            }
             outnumber.clear();
             Dice dicethread1 = new Dice();
             dicethread1.start();
@@ -171,7 +329,7 @@ public class Game extends Thread
             {
                 e.printStackTrace();
             }
-            int childyaku = yaku;
+            childyaku[k] = yaku;
             yaku = 0;
             for (Player player: Bukkit.getOnlinePlayers())
             {
@@ -193,7 +351,7 @@ public class Game extends Thread
             {
                 if (!dissableplayers.contains(player.getUniqueId()))
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§lチンチロリン♪" + outnumber.get(0) + " , " + outnumber.get(1) + " , " + outnumber.get(2) + "！");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§lチンチロリン♪§f§l" + outnumber.get(0) + " , " + outnumber.get(1) + " , " + outnumber.get(2) + "！");
                     player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l" + yakuname + "！！！");
                 }
             }
@@ -206,67 +364,112 @@ public class Game extends Thread
             {
                 e.printStackTrace();
             }
-            switch (childyaku)
+            switch (childyaku[k])
             {
                 case 111:
+                {
+                    jackpot = manchiro.getConfig().getDouble("jackpot");
+                    parentprice = 0;
+                    if (betvalue * 10 >= jackpot)
+                    {
+                        childprice[k] = jackpot - tax * betvalue;
+                    }
+                    else
+                    {
+                        childprice[k] = betvalue * 10 - tax * betvalue;
+                    }
+                    childprice[k] = betvalue * 2;
+                    for (Player player: Bukkit.getOnlinePlayers())
+                    {
+                        if (!dissableplayers.contains(player.getUniqueId()))
+                        {
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(ジャックポット)");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§c§l"+yakuname+"§f§lを出して" + childprice[k] + "円獲得しました！§7(手数料"+(tax * betvalue)+"円)");
+                        }
+                    }
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    jackpot = jackpot - childprice[k] - tax * betvalue;
+                    taxprice = taxprice + tax * betvalue;
+                    manchiro.getConfig().set("jackpot",jackpot);
+                    manchiro.saveConfig();
+                    Finish finish = new Finish();
+                    finish.start();
+                    return;
+                }
+                case 106:
                 {
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:5倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§lピンゾロ§f§lを出して" + (betvalue * 2) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l全員没収");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§c§l"+yakuname+"§f§lを出して没収されました！");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),betvalue * 2);
+                    childprice[k] = 0;
+                    jackpot = manchiro.getConfig().getDouble("jackpot");
+                    jackpot = jackpot + betvalue * 2;
+                    manchiro.getConfig().set("jackpot",jackpot);
+                    manchiro.saveConfig();
                     Finish finish = new Finish();
                     finish.start();
                     return;
                 }
+                case 100:
                 case 45:
                 {
+                    parentprice = (betvalue / 5 * 3 + parentprice);
+                    childprice[k] = (betvalue + betvalue / 5 * 2 - tax * betvalue);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:2倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§lシゴロ§f§lを出して" + (betvalue + betvalue / 5 * 2) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§c§l"+yakuname+"§f§lを出して" + childprice[k] + "円獲得しました！§7(手数料"+(tax * betvalue)+"円)");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),betvalue + betvalue / 5 * 2);
-                    vaultapi.deposit(fathername,betvalue / 5 * 3);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    vaultapi.deposit(parentname,betvalue / 5 * 3);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                     return;
                 }
-                case 2:
+                case 3:
                 {
+                    parentprice = (betvalue / 5 * 1 + betvalue + parentprice - tax * betvalue);
+                    childprice[k] = (betvalue / 5 * 4);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:1倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§l役無し§f§lを出して親が" + (betvalue / 5 * 1 + betvalue) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§c§l"+yakuname+"§f§lを出して親が" + (betvalue / 5 * 1 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),betvalue / 5 * 4);
-                    vaultapi.deposit(fathername,betvalue / 5 * 1 + betvalue);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    vaultapi.deposit(parentname,betvalue / 5 * 1 + betvalue - tax * betvalue);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                     return;
                 }
+                case 5:
                 case 1:
                 {
+                    parentprice = (betvalue / 5 * 2 + betvalue + parentprice - tax * betvalue);
+                    childprice[k] = (betvalue / 5 * 3);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:1倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§lヒフミ§f§lを出して親が" + (betvalue / 5 * 2 + betvalue) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:2倍)");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§c§l"+yakuname+"§f§lを出して親が" + (betvalue / 5 * 2 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),betvalue / 5 * 3);
-                    vaultapi.deposit(fathername,betvalue / 5 * 2 + betvalue);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    vaultapi.deposit(parentname,betvalue / 5 * 2 + betvalue - tax * betvalue);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                     return;
@@ -276,8 +479,10 @@ public class Game extends Thread
                     break;
                 }
             }
-            if (fathersyaku == childyaku)
+            if (parentyaku == childyaku[k])
             {
+                parentprice = parentprice + betvalue;
+                childprice[k] = betvalue;
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
                     if (!dissableplayers.contains(player.getUniqueId()))
@@ -286,73 +491,85 @@ public class Game extends Thread
                     }
                 }
                 vaultapi.deposit((childplayer.get(k)),betvalue);
-                vaultapi.deposit(fathername,betvalue);
+                vaultapi.deposit(parentname,childprice[k]);
                 Finish finish = new Finish();
                 finish.start();
                 return;
             }
-            if (fathersyaku < childyaku)
+            if (parentyaku < childyaku[k])
             {
-                if (childyaku > 20)
+                if (childyaku[k] > 20)
                 {
+                    parentprice = (betvalue / 5 * 2 + parentprice);
+                    childprice[k] = (betvalue / 5 * 3 + betvalue - tax * betvalue);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:3倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(fathername).getName() + "が§e§l" + yakuname + "§f§lを出して子が" + (betvalue / 5 * 3 + betvalue) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§e§l" + yakuname + "§f§lを出して子が" + childprice[k] + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                         }
                     }
-                    vaultapi.deposit(fathername,betvalue / 5 * 2);
-                    vaultapi.deposit((childplayer.get(k)),betvalue / 5 * 3 + betvalue);
+                    vaultapi.deposit(parentname,betvalue / 5 * 2);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                 }
                 else
                 {
+                    parentprice = (betvalue / 5 * 4 + parentprice);
+                    childprice[k] = (betvalue / 5 * 1 + betvalue - tax * betvalue);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f§l(倍率:1倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(fathername).getName() + "が§e§l" + yakuname + "§f§lを出して子が" + (betvalue / 5 + betvalue) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(parentname).getName() + "が§e§l" + yakuname + "§f§lを出して子が" + (betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                         }
                     }
-                    vaultapi.deposit(fathername,betvalue / 5 * 4);
-                    vaultapi.deposit((childplayer.get(k)),betvalue / 5 + betvalue);
+                    vaultapi.deposit(parentname,betvalue / 5 * 4);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                 }
             }
             else
             {
-                if (fathersyaku > 20)
+                if (parentyaku > 20)
                 {
+                    parentprice = (betvalue / 5 * 3 + betvalue + parentprice - tax * betvalue);
+                    childprice[k] = (betvalue / 5 * 2);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:3倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§l" + yakuname + "§f§lを出して親が" + (betvalue / 5 * 3 + betvalue) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§l" + yakuname + "§f§lを出して親が" + (betvalue / 5 * 3 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),betvalue / 5 * 2);
-                    vaultapi.deposit(fathername,betvalue / 5 * 3 + betvalue);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    vaultapi.deposit(parentname,betvalue / 5 * 3 + betvalue - tax * betvalue);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                 }
                 else
                 {
+                    parentprice = (betvalue / 5 + betvalue + parentprice - tax * betvalue);
+                    childprice[k] = (betvalue / 5 * 4);
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!dissableplayers.contains(player.getUniqueId()))
                         {
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f§l(倍率:1倍)");
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§l" + yakuname + "§f§lを出して親が" + (betvalue / 5 + betvalue) + "円獲得しました！");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "が§e§l" + yakuname + "§f§lを出して親が" + (betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),betvalue / 5 * 4);
-                    vaultapi.deposit(fathername,betvalue / 5 + betvalue);
+                    vaultapi.deposit((childplayer.get(k)),childprice[k]);
+                    vaultapi.deposit(parentname,betvalue / 5 + betvalue - tax * betvalue);
+                    taxprice = taxprice + tax * betvalue;
                     Finish finish = new Finish();
                     finish.start();
                 }
