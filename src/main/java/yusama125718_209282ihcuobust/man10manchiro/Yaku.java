@@ -165,25 +165,25 @@ public class Yaku extends Thread
                             case 2:
                             {
                                 yaku = 110;
-                                yakuname = "二のゾロ目";
+                                yakuname = "ニのゾロ目";
                                 break yakuhanntei;
                             }
                             case 3:
                             {
                                 yaku = 13;
-                                yakuname = "二のサン";
+                                yakuname = "ニのサン";
                                 break yakuhanntei;
                             }
                             case 4:
                             {
                                 yaku = 14;
-                                yakuname = "二のヨン";
+                                yakuname = "ニのヨン";
                                 break yakuhanntei;
                             }
                             case 5:
                             {
                                 yaku = 15;
-                                yakuname = "二のゴ";
+                                yakuname = "ニのゴ";
                                 break yakuhanntei;
                             }
                             case 6:
