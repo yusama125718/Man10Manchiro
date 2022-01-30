@@ -23,6 +23,7 @@ public class Finish extends Thread
             }
         }
         operation = false;
+        sitperson = 0;
         LocalDateTime ldt = LocalDateTime.now();
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
         mysql.execute("insert into manchiro_finish (endtime, betvalue, playercount, parent, parentuuid, parentyaku, parentwin, child1, child1uuid, child1yaku, child1win, child2, child2uuid, child2yaku, child2win, child3, child3uuid, child3yaku, child3win, child4, child4uuid, child4yaku, child4win, child5, child5uuid, child5yaku, child5win) values (" + ldt + ", "+ betvalue +", "+ playerperson +", "+ parentname +", " + Bukkit.getOfflinePlayer(parentname).getName() + ", "+ parentyaku +", "+ parentprice +", "+ Bukkit.getOfflinePlayer(childplayer.get(0)).getName() +", " + childplayer.get(0) +", "+ childyaku[0] +", "+ childprice[0] +", "+ Bukkit.getOfflinePlayer(childplayer.get(1)).getName() +", " + childplayer.get(1) +", "+ childyaku[1] +", "+ childprice[1] +", "+ Bukkit.getOfflinePlayer(childplayer.get(2)).getName() +", " + childplayer.get(2) +", "+ childyaku[2] +", "+ childprice[2] +", "+ Bukkit.getOfflinePlayer(childplayer.get(3)).getName() +", " + childplayer.get(3) +", "+ childyaku[3] +", "+ childprice[3] +", "+ Bukkit.getOfflinePlayer(childplayer.get(4)).getName() +", " + childplayer.get(4) +", "+ childyaku[4] +", "+ childprice[4] +")");
@@ -47,7 +48,6 @@ public class Finish extends Thread
             e.printStackTrace();
         }
         mysql.close();
-        outnumber.clear();
         parentname = null;
         childplayer.clear();
         sitperson = 0;
