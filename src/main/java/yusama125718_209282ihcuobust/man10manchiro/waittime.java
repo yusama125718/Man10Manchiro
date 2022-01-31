@@ -38,7 +38,7 @@ public class waittime extends Thread
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(parentname).getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！§7残り" + (120 - (i +1) * 20) + "秒");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rが§l一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！§7残り" + (120 - (i +1) * 20) + "秒");
                     }
                 }
             }
@@ -46,6 +46,7 @@ public class waittime extends Thread
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        starttime = dateFormat.format(date);
         if (playerperson == sitperson)
         {
             Game gamethread = new Game();
@@ -53,7 +54,7 @@ public class waittime extends Thread
             mysql.execute("insert into mcr_data(starttime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+betvalue+"','"+sitperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
             for (int i = 0;i<sitperson;i++)
             {
-                mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+(childplayer.get(i))+"');");
+                mysql.execute("update mcr_data set child"+i+"='"+Bukkit.getOfflinePlayer(childplayer.get(i))+"',child"+i+"uuid='"+childplayer.get(i)+"' where starttime='"+starttime+"';");
             }
         }
         else
@@ -61,7 +62,7 @@ public class waittime extends Thread
             mysql.execute("insert into mcr_data(starttime,endtime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+dateFormat.format(date)+"','"+betvalue+"','"+playerperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
             for (int i = 0;i < sitperson;i++)
             {
-                mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+(childplayer.get(i))+"');");
+                mysql.execute("update mcr_data set child"+i+"='"+Bukkit.getOfflinePlayer(childplayer.get(i))+"',child"+i+"uuid='"+childplayer.get(i)+"' where starttime='"+starttime+"';");
             }
             operation = false;
             activegame = false;
@@ -74,7 +75,7 @@ public class waittime extends Thread
             {
                 if (!disableplayers.contains(player.getUniqueId()))
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§f§l" + Bukkit.getOfflinePlayer(parentname).getName() + "の部屋は人が集まらなかったので解散しました");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの部屋は人が集まらなかったので解散しました");
                 }
             }
             parentname = null;

@@ -25,6 +25,7 @@ public final class Man10Manchiro extends JavaPlugin
     static public List<UUID> childplayer = new ArrayList<>();
     public static JavaPlugin manchiro;
     public static VaultAPI vaultapi;
+    public static String starttime;
 
     @Override
     public void onEnable()
@@ -33,7 +34,7 @@ public final class Man10Manchiro extends JavaPlugin
         this.manchiro = this;
         saveDefaultConfig();
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
-        mysql.execute("create table [if not exits] mcr_data(starttime varchar(19),endtime varchar(19),betvalue varchar(15),playercount varchar(1),tax varchar(15),parent varchar(50),parentuuid varchar(50),parentyaku varchar(3),parentwin varchar(15),child0 varchar(50),child0uuid varchar(50),child0yaku varchar(3),child0win varchar(15),child1 varchar(50),child1uuid varchar(50),child1yaku varchar(3),child1win varchar(15),child2 varchar(50),child2uuid varchar(50),child2yaku varchar(3),child2win varchar(15),child3 varchar(50),child3uuid varchar(50),child3yaku varchar(3),child3win varchar(15),child4 varchar(50),child4uuid varchar(50),child4yaku varchar(3),child4win varchar(15));");
+        mysql.execute("create table mcr_data(id int auto_increment,starttime varchar(19),endtime varchar(19),betvalue varchar(15),playercount varchar(1),tax varchar(15),parent varchar(50),parentuuid varchar(50),parentyaku varchar(3),parentwin varchar(15),child0 varchar(50),child0uuid varchar(50),child0yaku varchar(3),child0win varchar(15),child1 varchar(50),child1uuid varchar(50),child1yaku varchar(3),child1win varchar(15),child2 varchar(50),child2uuid varchar(50),child2yaku varchar(3),child2win varchar(15),child3 varchar(50),child3uuid varchar(50),child3yaku varchar(3),child3win varchar(15),child4 varchar(50),child4uuid varchar(50),child4yaku varchar(3),child4win varchar(15),primary key(id));");
         vaultapi = new VaultAPI();
         ongame = manchiro.getConfig().getBoolean("canPlay");
     }
@@ -130,7 +131,12 @@ public final class Man10Manchiro extends JavaPlugin
                         sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数がいっぱいかゲームが開かれていません");
                         return true;
                     }
-                    if ((((Player) sender).getUniqueId() == parentname)&&!(childplayer.contains(sender.getName())))
+                    if (sitperson == playerperson)
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数がいっぱいかゲームが開かれていません");
+                        return true;
+                    }
+                    if (((Player) sender).getUniqueId().equals(parentname)||childplayer.contains(((Player) sender).getUniqueId()))
                     {
                         sender.sendMessage("§l[§e§lManchiro§f§l]§r§lあなたはすでに参加しています！");
                         return true;
@@ -159,6 +165,27 @@ public final class Man10Manchiro extends JavaPlugin
                         }
                     }
                     sitperson = sitperson + 1;
+                    return true;
+                }
+                double jackpot = manchiro.getConfig().getDouble("jackpot");
+                if (sender.hasPermission("mcr.op"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
+                    return true;
+                }
+                else
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
                     return true;
                 }
             }
@@ -241,7 +268,7 @@ public final class Man10Manchiro extends JavaPlugin
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + sender.getName() + "§rが§l一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
                     }
                 }
                 parentname = ((Player) sender).getUniqueId();

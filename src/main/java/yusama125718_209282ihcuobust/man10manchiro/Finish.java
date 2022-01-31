@@ -22,21 +22,22 @@ public class Finish extends Thread
         {
             if (!disableplayers.contains(player.getUniqueId()))
             {
-                player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(parentname).getName() + "§lの部屋が終了しました");
+                player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの§l部屋が終了しました");
             }
         }
-        operation = false;
-        sitperson = 0;
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
-        mysql.execute("insert into mcr_data(endtime,betvalue,tax,playercount,parent,parentuuid,parentyaku,parentwin)values('"+dateFormat.format(date)+"','"+betvalue+"','"+taxprice+"','"+ playerperson +"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+ "','"+parentyaku+"','"+parentprice+"');");
-        for (int i = 0;i<sitperson;i++)
+        mysql.execute("update mcr_data set endtime='"+dateFormat.format(date)+"',tax='"+taxprice+"',parentyaku='"+parentyaku+"',parentwin='"+parentprice+"' where starttime='"+starttime+"';");
+        for (int i=0;i<sitperson;i++)
         {
-            mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid,child"+i+"yaku,child"+i+"win)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+childplayer.get(i)+"','"+ childyaku[i] +"','"+ childprice[i] +"');");
+            mysql.execute("update mcr_data set child"+i+"yaku='"+childyaku[i]+"',child"+i+"win='"+childprice[i]+"' where starttime='"+starttime+"';");
         }
+        operation = false;
+        sitperson = 0;
         parentname = null;
         childplayer.clear();
         sitperson = 0;
+        parentprice = 0;
     }
 }
