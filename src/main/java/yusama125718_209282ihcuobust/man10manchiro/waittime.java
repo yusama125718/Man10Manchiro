@@ -32,11 +32,14 @@ public class waittime extends Thread
                     e.printStackTrace();
                 }
             }
-            for (Player player: Bukkit.getOnlinePlayers())
+            if (!(120 - (i +1) * 20 == 0))
             {
-                if (!dissableplayers.contains(player.getUniqueId()))
+                for (Player player: Bukkit.getOnlinePlayers())
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(parentname).getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！残り" + (120 - (i - 1) * 20) + "秒");
+                    if (!disableplayers.contains(player.getUniqueId()))
+                    {
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(parentname).getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！§7残り" + (120 - (i +1) * 20) + "秒");
+                    }
                 }
             }
         }
@@ -55,25 +58,28 @@ public class waittime extends Thread
         }
         else
         {
-            mysql.execute("insert into mcr_data(starttime,endtime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+dateFormat.format(date)+"','"+betvalue+"','"+sitperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
-            for (int i=0;i<sitperson;i++)
+            mysql.execute("insert into mcr_data(starttime,endtime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+dateFormat.format(date)+"','"+betvalue+"','"+playerperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
+            for (int i = 0;i < sitperson;i++)
             {
                 mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+(childplayer.get(i))+"');");
             }
             operation = false;
             activegame = false;
             vaultapi.deposit(parentname,betvalue * playerperson);
-            for (int i = 0;i == playerperson;i++)
+            for (int i = 0;i < sitperson;i++)
             {
                 vaultapi.deposit((childplayer.get(i)),betvalue);
             }
             for (Player player: Bukkit.getOnlinePlayers())
             {
-                if (!dissableplayers.contains(player.getUniqueId()))
+                if (!disableplayers.contains(player.getUniqueId()))
                 {
                     player.sendMessage("§l[§e§lManchiro§f§l]§r§f§l" + Bukkit.getOfflinePlayer(parentname).getName() + "の部屋は人が集まらなかったので解散しました");
                 }
             }
+            parentname = null;
+            childplayer.clear();
+            sitperson = 0;
         }
     }
 }

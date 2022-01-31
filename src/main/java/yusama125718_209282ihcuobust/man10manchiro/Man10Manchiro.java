@@ -18,7 +18,7 @@ public final class Man10Manchiro extends JavaPlugin
     static boolean operation = false;
     static boolean activegame = false;
     static boolean ongame = false;
-    static public List<UUID> dissableplayers=new ArrayList<>();
+    static public List<UUID> disableplayers=new ArrayList<>();
     private OfflinePlayer playerid;
     static int playerperson;
     static int sitperson = 0;
@@ -33,8 +33,7 @@ public final class Man10Manchiro extends JavaPlugin
         this.manchiro = this;
         saveDefaultConfig();
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
-        mysql.execute("use mcr_data;");
-        mysql.execute("create table mcr_data(starttime varchar(19),endtime varchar(19),betvalue varchar(15),playercount varchar(1),tax varchar(15),parent varchar(50),parentuuid varchar(50),parentyaku varchar(3),parentwin varchar(15),child0 varchar(50),child0uuid varchar(50),child0yaku varchar(3),child0win varchar(15),child1 varchar(50),child1uuid varchar(50),child1yaku varchar(3),child1win varchar(15),child2 varchar(50),child2uuid varchar(50),child2yaku varchar(3),child2win varchar(15),child3 varchar(50),child3uuid varchar(50),child3yaku varchar(3),child3win varchar(15),child4 varchar(50),child4uuid varchar(50),child4yaku varchar(3),child4win varchar(15));");
+        mysql.execute("create table [if not exits] mcr_data(starttime varchar(19),endtime varchar(19),betvalue varchar(15),playercount varchar(1),tax varchar(15),parent varchar(50),parentuuid varchar(50),parentyaku varchar(3),parentwin varchar(15),child0 varchar(50),child0uuid varchar(50),child0yaku varchar(3),child0win varchar(15),child1 varchar(50),child1uuid varchar(50),child1yaku varchar(3),child1win varchar(15),child2 varchar(50),child2uuid varchar(50),child2yaku varchar(3),child2win varchar(15),child3 varchar(50),child3uuid varchar(50),child3yaku varchar(3),child3win varchar(15),child4 varchar(50),child4uuid varchar(50),child4yaku varchar(3),child4win varchar(15));");
         vaultapi = new VaultAPI();
         ongame = manchiro.getConfig().getBoolean("canPlay");
     }
@@ -83,13 +82,13 @@ public final class Man10Manchiro extends JavaPlugin
                 }
                 if (args[0].equals("hide"))
                 {
-                    if (dissableplayers.contains(playerid.getUniqueId()))
+                    if (disableplayers.contains(playerid.getUniqueId()))
                     {
                         return true;
                     }
                     else
                     {
-                        dissableplayers.add(playerid.getUniqueId());
+                        disableplayers.add(playerid.getUniqueId());
                         sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l非表示にします");
                         return true;
                     }
@@ -97,9 +96,9 @@ public final class Man10Manchiro extends JavaPlugin
 
                 if (args[0].equals("show"))
                 {
-                    if (dissableplayers.contains(playerid.getUniqueId()))
+                    if (disableplayers.contains(playerid.getUniqueId()))
                     {
-                        dissableplayers.remove(playerid.getUniqueId());
+                        disableplayers.remove(playerid.getUniqueId());
                         sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
 
                         return true;
@@ -141,9 +140,9 @@ public final class Man10Manchiro extends JavaPlugin
                         sender.sendMessage("§l[§e§lManchiro§f§l]§r§l所持金が足りません！");
                         return true;
                     }
-                    if (dissableplayers.contains(playerid.getUniqueId()))
+                    if (disableplayers.contains(playerid.getUniqueId()))
                     {
-                        dissableplayers.remove(playerid.getUniqueId());
+                        disableplayers.remove(playerid.getUniqueId());
                         sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
                     }
                     vaultapi.withdraw(((Player) sender).getUniqueId(),betvalue);
@@ -191,7 +190,7 @@ public final class Man10Manchiro extends JavaPlugin
                     sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は数字にしてください");
                     return true;
                 }
-                boolean isNumeric1 = args[1].matches("-?\\d+");
+                boolean isNumeric1 = args[2].matches("-?\\d+");
                 if (!isNumeric1)
                 {
                     sender.sendMessage("§l[§e§lManchiro§f§l]§r§l人数は数字にしてください");
@@ -233,14 +232,14 @@ public final class Man10Manchiro extends JavaPlugin
                 waittime wait = new waittime();
                 wait.start();
 
-                if (dissableplayers.contains(playerid.getUniqueId()))
+                if (disableplayers.contains(playerid.getUniqueId()))
                 {
-                    dissableplayers.remove(playerid.getUniqueId());
+                    disableplayers.remove(playerid.getUniqueId());
                     sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
                 }
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
-                    if (!dissableplayers.contains(player.getUniqueId()))
+                    if (!disableplayers.contains(player.getUniqueId()))
                     {
                         player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
                     }

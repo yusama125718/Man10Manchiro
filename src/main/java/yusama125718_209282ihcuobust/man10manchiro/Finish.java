@@ -20,7 +20,7 @@ public class Finish extends Thread
     {
         for (Player player: Bukkit.getOnlinePlayers())
         {
-            if (!dissableplayers.contains(player.getUniqueId()))
+            if (!disableplayers.contains(player.getUniqueId()))
             {
                 player.sendMessage("§l[§e§lManchiro§f§l]§r" + Bukkit.getOfflinePlayer(parentname).getName() + "§lの部屋が終了しました");
             }
@@ -30,7 +30,7 @@ public class Finish extends Thread
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
-        mysql.execute("insert into mcr_data(endtime,betvalue,tax,playercount,parent,parentuuid,parentyaku,parentwin)values('"+dateFormat.format(date)+"','"+betvalue+"','"+taxprice+"','"+ playerperson +"','"+ parentname +"','"+ Bukkit.getOfflinePlayer(parentname).getName()+ "','"+parentyaku+"','"+parentprice+"');");
+        mysql.execute("insert into mcr_data(endtime,betvalue,tax,playercount,parent,parentuuid,parentyaku,parentwin)values('"+dateFormat.format(date)+"','"+betvalue+"','"+taxprice+"','"+ playerperson +"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+ "','"+parentyaku+"','"+parentprice+"');");
         for (int i = 0;i<sitperson;i++)
         {
             mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid,child"+i+"yaku,child"+i+"win)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+childplayer.get(i)+"','"+ childyaku[i] +"','"+ childprice[i] +"');");
