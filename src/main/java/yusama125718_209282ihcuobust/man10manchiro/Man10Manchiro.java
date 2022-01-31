@@ -34,7 +34,7 @@ public final class Man10Manchiro extends JavaPlugin
         saveDefaultConfig();
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
         mysql.execute("use mcr_data;");
-        mysql.execute("create table mcr_data(starttime datetime,endtime datetime,betvalue bigint,taxprice bigint,parent varchar(36),parentuuid varchar(34),parentyaku varchar(3),parentwin bigint,child0 varchar(34),child0uuid varchar(36),child0yaku varchar(3),child0win bigint,child1 varchar(34),child1uuid varchar(36),child1yaku varchar(3),child1win bigint,child2 varchar(34),child2uuid varchar(36),child2yaku varchar(3),child2win bigint,child3 varchar(34),child3uuid varchar(36),child3yaku varchar(3),child3win bigint,child4 varchar(34),child4uuid varchar(36),child4yaku varchar(3),child4win bigint);");
+        mysql.execute("create table mcr_data(starttime varchar(19),endtime varchar(19),betvalue varchar(15),playercount varchar(1),tax varchar(15),parent varchar(50),parentuuid varchar(50),parentyaku varchar(3),parentwin varchar(15),child0 varchar(50),child0uuid varchar(50),child0yaku varchar(3),child0win varchar(15),child1 varchar(50),child1uuid varchar(50),child1yaku varchar(3),child1win varchar(15),child2 varchar(50),child2uuid varchar(50),child2yaku varchar(3),child2win varchar(15),child3 varchar(50),child3uuid varchar(50),child3yaku varchar(3),child3win varchar(15),child4 varchar(50),child4uuid varchar(50),child4yaku varchar(3),child4win varchar(15));");
         vaultapi = new VaultAPI();
         ongame = manchiro.getConfig().getBoolean("canPlay");
     }

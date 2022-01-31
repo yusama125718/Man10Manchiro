@@ -3,7 +3,9 @@ package yusama125718_209282ihcuobust.man10manchiro;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.time.LocalDateTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static yusama125718_209282ihcuobust.man10manchiro.Man10Manchiro.*;
 
@@ -39,23 +41,24 @@ public class waittime extends Thread
             }
         }
         MySQLManager mysql = new MySQLManager(manchiro,"manchiro");
-        LocalDateTime ldt = LocalDateTime.now();
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (playerperson == sitperson)
         {
             Game gamethread = new Game();
             gamethread.start();
-            mysql.execute("insert into mcr_data(starttime,betvalue,playercount,parent,parentuuid)values("+ldt+","+betvalue+","+sitperson+","+Bukkit.getOfflinePlayer(parentname).getName()+","+parentname+");");
+            mysql.execute("insert into mcr_data(starttime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+betvalue+"','"+sitperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
             for (int i = 0;i<sitperson;i++)
             {
-                mysql.execute("insert into mcrdata(child"+i+",child"+i+"uuid)values("+Bukkit.getOfflinePlayer(childplayer.get(i))+","+(childplayer.get(i))+");");
+                mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+(childplayer.get(i))+"');");
             }
         }
         else
         {
-            mysql.execute("insert into mcr_data(starttime,endtime,betvalue,playercount,parent,parentuuid)values("+ ldt+","+ldt+","+betvalue+","+sitperson+","+Bukkit.getOfflinePlayer(parentname).getName()+","+parentname+");");
+            mysql.execute("insert into mcr_data(starttime,endtime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+dateFormat.format(date)+"','"+betvalue+"','"+sitperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
             for (int i=0;i<sitperson;i++)
             {
-                mysql.execute("insert into mcrdata(child"+i+",child"+i+"uuid)values("+Bukkit.getOfflinePlayer(childplayer.get(i))+","+(childplayer.get(i))+");");
+                mysql.execute("insert into mcr_data(child"+i+",child"+i+"uuid)values('"+Bukkit.getOfflinePlayer(childplayer.get(i))+"','"+(childplayer.get(i))+"');");
             }
             operation = false;
             activegame = false;
