@@ -2,8 +2,7 @@ package yusama125718_209282ihcuobust.man10manchiro;
 
 import java.util.Random;
 
-import static yusama125718_209282ihcuobust.man10manchiro.Game.outnumber;
-import static yusama125718_209282ihcuobust.man10manchiro.Game.yaku;
+import static yusama125718_209282ihcuobust.man10manchiro.Game.*;
 
 public class Dice extends Thread
 {
@@ -67,10 +66,24 @@ public class Dice extends Thread
             {
                 e.printStackTrace();
             }
-
-            if (!(yaku == 0))
+            switch (yaku)
             {
-                if (!(yaku == 2))
+                case 0:
+                case 3:
+                {
+                    if (i == 0)
+                    {
+                        throw1.addAll(outnumber);
+                        outnumber.clear();
+                    }
+                    if (i == 1)
+                    {
+                        throw2.addAll(outnumber);
+                        outnumber.clear();
+                    }
+                    break ;
+                }
+                default:
                 {
                     break loop;
                 }

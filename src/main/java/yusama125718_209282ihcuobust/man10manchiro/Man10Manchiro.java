@@ -62,24 +62,20 @@ public final class Man10Manchiro extends JavaPlugin
                     double jackpot = manchiro.getConfig().getDouble("jackpot");
                     if (sender.hasPermission("mcr.op"))
                     {
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
                         sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
                         sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
-                        return true;
-                    }
-                    else
-                    {
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
                         sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
-                        return true;
                     }
+                    else if (sender.hasPermission("mcr.father"))
+                    {
+                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                    }
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
+                    return true;
                 }
                 if (args[0].equals("hide"))
                 {
@@ -157,37 +153,47 @@ public final class Man10Manchiro extends JavaPlugin
                     {
                         if (childplayer.contains(player.getUniqueId()))
                         {
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + sender.getName() + "§rが§l部屋に入りました。");
                         }
                         if(player.getUniqueId() == parentname)
                         {
-                            player.sendMessage("§l[§e§lManchiro§f§l]§r" + sender.getName() + "§lが部屋に入りました。");
+                            player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + sender.getName() + "§rが§l部屋に入りました。");
                         }
                     }
                     sitperson = sitperson + 1;
                     return true;
                 }
+                if (args[0].equals("yaku"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §b§l役説明(強い順)");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §r1,1,1 : §7JackPot全額かかけ金の10倍の低いほうが払われます");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §r6,6,6 : §7子も親も全額没収され、JackPotに入ります");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §rX,X,X : §7勝てばかけ金の3倍もらえます");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §rX,Y,Z(X+Y+Z=10) : §7かけ金の2倍が貰えます");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §r4,5,6 : §7かけ金の2倍が貰えます");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §rX,X,Y : §7Yが役の強さとなり、勝てばかけ金の2倍が貰えます");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §rX,Y,Z(X+Y+Z=5) : §7かけ金の2倍を失います");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §r1,2,3 : §7かけ金の2倍を失います");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §rションベン : §7低確率で発生し、かけ金の1倍を失います");
+                    return true;
+                }
                 double jackpot = manchiro.getConfig().getDouble("jackpot");
                 if (sender.hasPermission("mcr.op"))
                 {
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
                     sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
                     sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
-                    return true;
-                }
-                else
-                {
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
                     sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
-                    return true;
                 }
+                else if (sender.hasPermission("mcr.father"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                }
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
+                return true;
             }
             case 3:
             {
@@ -268,7 +274,7 @@ public final class Man10Manchiro extends JavaPlugin
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + sender.getName() + "§rが§l一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + sender.getName() + "§rが§l一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
                     }
                 }
                 parentname = ((Player) sender).getUniqueId();
@@ -279,24 +285,20 @@ public final class Man10Manchiro extends JavaPlugin
                 double jackpot = manchiro.getConfig().getDouble("jackpot");
                 if (sender.hasPermission("mcr.op"))
                 {
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
                     sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
                     sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
-                    return true;
-                }
-                else
-                {
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
                     sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot§f"+ jackpot +"円");
-                    return true;
                 }
+                else if (sender.hasPermission("mcr.father"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                }
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
+                return true;
             }
         }
     }

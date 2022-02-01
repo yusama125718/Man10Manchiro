@@ -22,7 +22,8 @@ public class Finish extends Thread
         {
             if (!disableplayers.contains(player.getUniqueId()))
             {
-                player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの§l部屋が終了しました");
+                player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの§l部屋が終了しました");
+                player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§r§l: §e§l"+(betvalue * sitperson)+"円 → "+parentwin+"円§r§e(うち手数料"+(parentwin - parentprice)+"円)");
             }
         }
         Date date = new Date();
@@ -39,5 +40,6 @@ public class Finish extends Thread
         childplayer.clear();
         sitperson = 0;
         parentprice = 0;
+        parentwin = 0;
     }
 }
