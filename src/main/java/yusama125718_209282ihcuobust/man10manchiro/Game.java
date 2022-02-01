@@ -25,7 +25,7 @@ public class Game extends Thread
     static int parentyaku;
     static double parentprice = 0;
     static double[] childprice = new double[5];
-    double jackpot;
+    static double jackpot;
     static double tax = manchiro.getConfig().getDouble("tax");
     static double taxprice = 0;
     static double parentwin;
@@ -218,7 +218,14 @@ public class Game extends Thread
                     }
                 }
                 vaultapi.deposit(parentname,parentprice);
-                jackpot = jackpot - parentwin;
+                if (jackpot > (betvalue * sitperson * 2))
+                {
+                    jackpot = (betvalue * sitperson * 2 - parentprice);
+                }
+                else
+                {
+                    jackpot = (jackpot - parentprice);
+                }
                 taxprice = tax * betvalue;
                 manchiro.getConfig().set("jackpot",jackpot);
                 manchiro.saveConfig();
@@ -541,7 +548,14 @@ public class Game extends Thread
                         }
                     }
                     vaultapi.deposit((childplayer.get(k)),(childprice[k]));
-                    jackpot = jackpot - childprice[k] - tax * betvalue;
+                    if (jackpot > (betvalue * 2))
+                    {
+                        jackpot = (betvalue * 2 - childprice[k]);
+                    }
+                    else
+                    {
+                        jackpot = (jackpot - childprice[k]);
+                    }
                     taxprice = taxprice + tax * betvalue;
                     manchiro.getConfig().set("jackpot",jackpot);
                     manchiro.saveConfig();

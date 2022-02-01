@@ -239,7 +239,7 @@ public final class Man10Manchiro extends JavaPlugin
                 double maxrate = manchiro.getConfig().getDouble("maxRate");
                 if (!(betvalue <= maxrate))
                 {
-                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は"+ minrate +"円以下にしてください");
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§lかけ金は"+ maxrate +"円以下にしてください");
                     return true;
                 }
                 playerperson = parseInt(args[2]);

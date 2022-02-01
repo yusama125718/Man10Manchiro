@@ -34,10 +34,18 @@ public class Finish extends Thread
         {
             mysql.execute("update mcr_data set child"+i+"yaku='"+childyaku[i]+"',child"+i+"win='"+childprice[i]+"' where starttime='"+starttime+"';");
         }
+        jackpot = manchiro.getConfig().getDouble("jackpot");
+        jackpot = jackpot + taxprice;
+        manchiro.getConfig().set("jackpot",jackpot);
+        manchiro.saveConfig();
         operation = false;
         sitperson = 0;
         parentname = null;
         childplayer.clear();
+        for (int i= 0;i>sitperson;i++)
+        {
+            childyaku[i] = 0;
+        }
         sitperson = 0;
         parentprice = 0;
         parentwin = 0;
