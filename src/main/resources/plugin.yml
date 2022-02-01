@@ -13,7 +13,7 @@ permissions:
     default: op
   mcr.player:
     default: true
-  mcr.father:
+  mcr.parent:
     default: op
 
 depend:

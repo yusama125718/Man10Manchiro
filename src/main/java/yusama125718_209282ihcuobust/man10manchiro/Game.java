@@ -39,6 +39,14 @@ public class Game extends Thread
         {
             Shonben shonbenthread = new Shonben();
             shonbenthread.start();
+            try
+            {
+                shonbenthread.join();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return;
         }
         Dice dicethread = new Dice();
@@ -78,6 +86,14 @@ public class Game extends Thread
             {
                 Shonben shonbenthread = new Shonben();
                 shonbenthread.start();
+                try
+                {
+                    shonbenthread.join();
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
                 return;
             }
             for (Player player: Bukkit.getOnlinePlayers())
@@ -119,6 +135,14 @@ public class Game extends Thread
                 {
                     Shonben shonbenthread = new Shonben();
                     shonbenthread.start();
+                    try
+                    {
+                        shonbenthread.join();
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
                     return;
                 }
                 for (Player player: Bukkit.getOnlinePlayers())
@@ -390,7 +414,14 @@ public class Game extends Thread
             {
                 Shonben shonbenthread = new Shonben();
                 shonbenthread.start();
-                return;
+                try
+                {
+                    shonbenthread.join();
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
             }
             outnumber.clear();
             Dice dicethread1 = new Dice();
@@ -429,7 +460,14 @@ public class Game extends Thread
                 {
                     Shonben shonbenthread = new Shonben();
                     shonbenthread.start();
-                    return;
+                    try
+                    {
+                        shonbenthread.join();
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
@@ -470,7 +508,14 @@ public class Game extends Thread
                     {
                         Shonben shonbenthread = new Shonben();
                         shonbenthread.start();
-                        return;
+                        try
+                        {
+                            shonbenthread.join();
+                        }
+                        catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
@@ -636,6 +681,10 @@ public class Game extends Thread
                     vaultapi.deposit((childplayer.get(k)),childprice[k]);
                     vaultapi.deposit(parentname,betvalue / 5 * 2 + betvalue - tax * betvalue);
                     taxprice = taxprice + tax * betvalue;
+                    break yyy;
+                }
+                case 0:
+                {
                     break yyy;
                 }
                 default:

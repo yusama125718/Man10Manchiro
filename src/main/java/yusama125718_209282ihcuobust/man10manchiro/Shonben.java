@@ -58,8 +58,6 @@ public class Shonben extends Thread
             }
         }
         taxprice = tax * betvalue;
-        Finish finish = new Finish();
-        finish.start();
         return;
     }
 }
