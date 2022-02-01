@@ -29,6 +29,7 @@ public class Game extends Thread
     static double tax = manchiro.getConfig().getDouble("tax");
     static double taxprice = 0;
     static double parentwin;
+    public static boolean parentshonben;
 
     @Override
     public void run()
