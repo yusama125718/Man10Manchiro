@@ -245,8 +245,11 @@ public class Game extends Thread
                         }
                     }
                 }
-                vaultapi.deposit(parentname,parentprice);
-                if (jackpot > (betvalue * sitperson * 2))
+                if (0 < parentprice)
+                {
+                    vaultapi.deposit(parentname,parentprice);
+                }
+                if (jackpot < (betvalue * sitperson * 2))
                 {
                     jackpot = (betvalue * sitperson * 2 - jackpot);
                 }
@@ -598,8 +601,11 @@ public class Game extends Thread
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§r§l: §e§l"+betvalue+"円 → "+(childprice[k] + tax * betvalue)+"円§r§e(うち手数料"+(tax * betvalue)+"円)");
                         }
                     }
-                    vaultapi.deposit((childplayer.get(k)),(childprice[k]));
-                    if (jackpot > (betvalue * 2))
+                    if (0 < parentprice)
+                    {
+                        vaultapi.deposit((childplayer.get(k)),(childprice[k]));
+                    }
+                    if (jackpot < (betvalue * 2))
                     {
                         jackpot = (betvalue * 2 - jackpot);
                     }
