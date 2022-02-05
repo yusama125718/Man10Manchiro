@@ -47,6 +47,57 @@ public final class Man10Manchiro extends JavaPlugin
             sender.sendMessage(("§c[manchiro]Player以外は実行できません"));
             return true;
         }
+        if (args.length == 0)
+        {
+            if (args[0].equals("help"))
+            {
+                double jackpot = manchiro.getConfig().getDouble("jackpot");
+                if (sender.hasPermission("mcr.op"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                }
+                else if (sender.hasPermission("mcr.father"))
+                {
+                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
+                }
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
+                return true;
+            }
+            if (args[0].equals("hide"))
+            {
+                if (disableplayers.contains(playerid.getUniqueId()))
+                {
+                    return true;
+                }
+                else
+                {
+                    disableplayers.add(playerid.getUniqueId());
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l非表示にします");
+                    return true;
+                }
+            }
+
+            if (args[0].equals("show"))
+            {
+                if (disableplayers.contains(playerid.getUniqueId()))
+                {
+                    disableplayers.remove(playerid.getUniqueId());
+                    sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
+
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
         Player playerid = (Player) sender;
         if (!(sender.hasPermission("mcr.player")))
         {
@@ -57,54 +108,6 @@ public final class Man10Manchiro extends JavaPlugin
         {
             case 1:
             {
-                if (args[0].equals("help"))
-                {
-                    double jackpot = manchiro.getConfig().getDouble("jackpot");
-                    if (sender.hasPermission("mcr.op"))
-                    {
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr on : §lマンチロをonにします");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr off : §lマンチロをoffにします");
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                    }
-                    else if (sender.hasPermission("mcr.father"))
-                    {
-                        sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr start [かけ金] [人数] : §l部屋を立て、親となります(かけ金を人数分支払います)");
-                    }
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr hide : §l非表示にします");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                    sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
-                    return true;
-                }
-                if (args[0].equals("hide"))
-                {
-                    if (disableplayers.contains(playerid.getUniqueId()))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        disableplayers.add(playerid.getUniqueId());
-                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l非表示にします");
-                        return true;
-                    }
-                }
-
-                if (args[0].equals("show"))
-                {
-                    if (disableplayers.contains(playerid.getUniqueId()))
-                    {
-                        disableplayers.remove(playerid.getUniqueId());
-                        sender.sendMessage("§l[§e§lManchiro§f§l]§r§7§l表示します");
-
-                        return true;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
                 if (sender.hasPermission("mcr.op"))
                 {
                     if (args[0].equals("on"))
