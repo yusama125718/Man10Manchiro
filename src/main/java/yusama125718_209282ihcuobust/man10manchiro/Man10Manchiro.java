@@ -47,6 +47,7 @@ public final class Man10Manchiro extends JavaPlugin
             sender.sendMessage(("§c[manchiro]Player以外は実行できません"));
             return true;
         }
+        Player playerid = (Player) sender;
         if (args.length == 1)
         {
             if (args[0].equals("help"))
@@ -98,7 +99,6 @@ public final class Man10Manchiro extends JavaPlugin
                 }
             }
         }
-        Player playerid = (Player) sender;
         if (!(sender.hasPermission("mcr.player")))
         {
             sender.sendMessage(("§c[manchiro]You don't have permissions!"));
