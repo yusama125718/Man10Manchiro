@@ -38,6 +38,7 @@ public class Game extends Thread
         int s = dicerondom.nextInt(1000);
         if (s == 0)
         {
+            parentshonben = true;
             Shonben shonbenthread = new Shonben();
             shonbenthread.start();
             try
@@ -85,6 +86,7 @@ public class Game extends Thread
             int s2 = dicerondom2.nextInt(1000);
             if (s2 == 0)
             {
+                parentshonben = true;
                 Shonben shonbenthread = new Shonben();
                 shonbenthread.start();
                 try
@@ -134,6 +136,7 @@ public class Game extends Thread
                 int s3 = dicerondom3.nextInt(1000);
                 if (s3 == 0)
                 {
+                    parentshonben = true;
                     Shonben shonbenthread = new Shonben();
                     shonbenthread.start();
                     try
@@ -413,6 +416,7 @@ public class Game extends Thread
             int s1 = dicerondom1.nextInt(1000);
             if (s1 == 0)
             {
+                parentshonben = false;
                 Shonben shonbenthread = new Shonben();
                 shonbenthread.start();
                 try
@@ -459,6 +463,7 @@ public class Game extends Thread
                 int s5 = dicerondom5.nextInt(1000);
                 if (s5 == 0)
                 {
+                    parentshonben = false;
                     Shonben shonbenthread = new Shonben();
                     shonbenthread.start();
                     try
@@ -507,6 +512,7 @@ public class Game extends Thread
                     int s4 = dicerondom4.nextInt(1000);
                     if (s4 == 0)
                     {
+                        parentshonben = false;
                         Shonben shonbenthread = new Shonben();
                         shonbenthread.start();
                         try
