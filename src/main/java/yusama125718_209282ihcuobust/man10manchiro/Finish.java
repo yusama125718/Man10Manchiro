@@ -42,6 +42,7 @@ public class Finish extends Thread
         sitperson = 0;
         parentname = null;
         childplayer.clear();
+        taxprice = 0;
         for (int i= 0;i>sitperson;i++)
         {
             childyaku[i] = 0;

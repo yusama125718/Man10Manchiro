@@ -54,7 +54,7 @@ public class waittime extends Thread
             mysql.execute("insert into mcr_data(starttime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+betvalue+"','"+sitperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
             for (int i = 0;i<sitperson;i++)
             {
-                mysql.execute("update mcr_data set child"+i+"='"+Bukkit.getOfflinePlayer(childplayer.get(i))+"',child"+i+"uuid='"+childplayer.get(i)+"' where starttime='"+starttime+"';");
+                mysql.execute("update mcr_data set child"+i+"='"+Bukkit.getOfflinePlayer(childplayer.get(i)).getName()+"',child"+i+"uuid='"+childplayer.get(i)+"' where starttime='"+starttime+"';");
             }
         }
         else
@@ -62,7 +62,7 @@ public class waittime extends Thread
             mysql.execute("insert into mcr_data(starttime,endtime,betvalue,playercount,parent,parentuuid)values('"+dateFormat.format(date)+"','"+dateFormat.format(date)+"','"+betvalue+"','"+playerperson+"','"+Bukkit.getOfflinePlayer(parentname).getName()+"','"+parentname+"');");
             for (int i = 0;i < sitperson;i++)
             {
-                mysql.execute("update mcr_data set child"+i+"='"+Bukkit.getOfflinePlayer(childplayer.get(i))+"',child"+i+"uuid='"+childplayer.get(i)+"' where starttime='"+starttime+"';");
+                mysql.execute("update mcr_data set child"+i+"='"+Bukkit.getOfflinePlayer(childplayer.get(i)).getName()+"',child"+i+"uuid='"+childplayer.get(i)+"' where starttime='"+starttime+"';");
             }
             operation = false;
             activegame = false;
