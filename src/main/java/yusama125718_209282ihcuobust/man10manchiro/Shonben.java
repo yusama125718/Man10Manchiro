@@ -44,7 +44,7 @@ public class Shonben extends Thread
                         e.printStackTrace();
                     }
                     player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f(倍率:1倍)");
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rが§c§lションベン§fをして§l子が" + (betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rが§c§lションベン§fをして§l子が" + String.format("%,.0f", betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+String.format("%,.0f", tax * betvalue)+"円)");
                 }
             }
             vaultapi.deposit(parentname,parentprice);
@@ -55,7 +55,7 @@ public class Shonben extends Thread
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(i)).getName() + "§r§l: §e§l"+betvalue+"円 → "+(childprice[i] + tax * betvalue)+"円§r§e(うち手数料"+(tax * betvalue)+"円)");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(i)).getName() + "§r§l: §e§l"+String.format("%,.0f", betvalue)+"円 → "+String.format("%,.0f", childprice[i] + tax * betvalue)+"円§r§e(うち手数料"+String.format("%,.0f", tax * betvalue)+"円)");
                     }
                 }
             }
@@ -93,7 +93,7 @@ public class Shonben extends Thread
                         e.printStackTrace();
                     }
                     player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f(倍率:1倍)");
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§rが§c§lションベン§fをして§l子が" + (betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+tax * betvalue+"円)");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§rが§c§lションベン§fをして§l子が" + String.format("%,.0f", betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+String.format("%,.0f", tax * betvalue)+"円)");
                 }
             }
             vaultapi.deposit(parentname,parentprice);

@@ -67,7 +67,7 @@ public final class Man10Manchiro extends JavaPlugin
                 sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
                 sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
                 sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ String.format("%,.0f", jackpot) +"円");
                 return true;
             }
             if (args[0].equals("hide"))
@@ -195,7 +195,7 @@ public final class Man10Manchiro extends JavaPlugin
                 sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr show : §l表示します");
                 sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr yaku : §l役の説明を表示します");
                 sender.sendMessage("§l[§e§lManchiro§f§l] §7/mcr join : §l現在立っている部屋に入ります");
-                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ jackpot +"円");
+                sender.sendMessage("§l[§e§lManchiro§f§l] §eJackPot : §f"+ String.format("%,.0f", jackpot) +"円");
                 return true;
             }
             case 3:
@@ -277,7 +277,7 @@ public final class Man10Manchiro extends JavaPlugin
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + sender.getName() + "§rが§l一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + sender.getName() + "§rが§l一人あたり" + String.format("%,.0f", betvalue) + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で開始しました！ /mcr join で参加しましょう！");
                     }
                 }
                 parentname = ((Player) sender).getUniqueId();

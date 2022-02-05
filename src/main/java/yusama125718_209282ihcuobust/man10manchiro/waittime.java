@@ -38,7 +38,7 @@ public class waittime extends Thread
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rが§l一人あたり" + betvalue + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！§7残り" + (120 - (i +1) * 20) + "秒");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rが§l一人あたり" + String.format("%,.0f", betvalue) + "§l円で§e§lマンチロ§f§lを子" + playerperson + "人で募集中！ /mcr join で参加しましょう！§7残り" + (120 - (i +1) * 20) + "秒");
                     }
                 }
             }
