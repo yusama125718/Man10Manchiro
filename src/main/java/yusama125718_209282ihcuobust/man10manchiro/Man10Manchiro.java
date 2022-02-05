@@ -47,7 +47,7 @@ public final class Man10Manchiro extends JavaPlugin
             sender.sendMessage(("§c[manchiro]Player以外は実行できません"));
             return true;
         }
-        if (args.length == 0)
+        if (args.length == 1)
         {
             if (args[0].equals("help"))
             {
