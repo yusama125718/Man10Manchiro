@@ -248,7 +248,7 @@ public class Game extends Thread
                 vaultapi.deposit(parentname,parentprice);
                 if (jackpot > (betvalue * sitperson * 2))
                 {
-                    jackpot = (betvalue * sitperson * 2 - parentprice);
+                    jackpot = (betvalue * sitperson * 2 - jackpot);
                 }
                 else
                 {
