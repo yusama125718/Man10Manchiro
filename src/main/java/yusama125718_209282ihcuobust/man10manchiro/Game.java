@@ -253,8 +253,8 @@ public class Game extends Thread
                 {
                     jackpot = (jackpot - parentprice);
                 }
-                parentprice = parentprice + betvalue * sitperson + betvalue;
-                parentwin = parentwin + betvalue * sitperson + betvalue;
+                parentprice = parentprice + betvalue * sitperson * 2;
+                parentwin = parentwin + betvalue * sitperson * 2;
                 if (0 < parentprice)
                 {
                     vaultapi.deposit(parentname,parentprice);
