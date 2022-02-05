@@ -589,7 +589,6 @@ public class Game extends Thread
                     {
                         childprice[k] = betvalue * 10 - tax * betvalue;
                     }
-                    childprice[k] = betvalue * 2;
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
                         if (!disableplayers.contains(player.getUniqueId()))
@@ -602,7 +601,7 @@ public class Game extends Thread
                     vaultapi.deposit((childplayer.get(k)),(childprice[k]));
                     if (jackpot > (betvalue * 2))
                     {
-                        jackpot = (betvalue * 2 - childprice[k]);
+                        jackpot = (betvalue * 2 - jackpot);
                     }
                     else
                     {
