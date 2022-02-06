@@ -75,7 +75,7 @@ public class waittime extends Thread
             {
                 if (!disableplayers.contains(player.getUniqueId()))
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの部屋は人が集まらなかったので解散しました");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの部屋は人が集まらなかったので解散しました");
                 }
             }
             parentname = null;

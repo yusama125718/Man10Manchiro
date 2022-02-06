@@ -251,9 +251,9 @@ public class Game extends Thread
                         }
                     }
                 }
-                if (jackpot < (betvalue * sitperson * 2))
+                if (jackpot < (betvalue * sitperson))
                 {
-                    jackpot = (betvalue * sitperson * 2 - jackpot);
+                    jackpot = (betvalue * sitperson - jackpot);
                 }
                 else
                 {
@@ -612,9 +612,9 @@ public class Game extends Thread
                             player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§r§l: §e§l"+String.format("%,.0f", betvalue)+"円 → "+String.format("%,.0f", childprice[k] + tax * betvalue)+"円§r§e(うち手数料"+String.format("%,.0f", (tax * betvalue))+"円)");
                         }
                     }
-                    if (jackpot < (betvalue * 2))
+                    if (jackpot < (betvalue))
                     {
-                        jackpot = (betvalue * 2 - jackpot);
+                        jackpot = (betvalue - jackpot);
                     }
                     else
                     {
@@ -761,7 +761,7 @@ public class Game extends Thread
                                 if (!disableplayers.contains(player.getUniqueId()))
                                 {
                                     player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子の勝ち！§f(倍率:1倍)");
-                                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rが§c§l" + yakuname + "§fを出して§l子が" + String.format("%,.0f", betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+String.format("%,.0f", (tax * betvalue))+"円)");
+                                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§rが§c§l" + yakuname + "§fを出して§l子が" + String.format("%,.0f", betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+String.format("%,.0f", (tax * betvalue))+"円)");
                                     player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§r§l: §e§l"+String.format("%,.0f", betvalue)+"円 → "+String.format("%,.0f", betvalue + betvalue / 5)+"円§r§e(うち手数料"+String.format("%,.0f", (tax * betvalue))+"円)");
                                 }
                             }
