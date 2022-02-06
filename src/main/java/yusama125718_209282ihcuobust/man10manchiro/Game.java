@@ -621,7 +621,7 @@ public class Game extends Thread
                         jackpot = (jackpot - childprice[k]);
                     }
                     childprice[k] = childprice[k] + betvalue * 2;
-                    if (0 < parentprice)
+                    if (0 <= childprice[k])
                     {
                         vaultapi.deposit((childplayer.get(k)),(childprice[k]));
                     }
