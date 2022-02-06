@@ -59,8 +59,6 @@ public class Shonben extends Thread
                     }
                 }
             }
-            taxprice = tax * betvalue;
-            return;
         }
         else
         {
@@ -98,8 +96,7 @@ public class Shonben extends Thread
             }
             vaultapi.deposit(parentname,parentprice);
             vaultapi.deposit((childplayer.get(k)),childprice[k]);
-            taxprice = tax * betvalue;
-            return;
         }
+        taxprice = tax * betvalue;
     }
 }

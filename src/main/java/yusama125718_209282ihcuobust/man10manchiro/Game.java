@@ -49,6 +49,8 @@ public class Game extends Thread
             {
                 e.printStackTrace();
             }
+            Finish finish = new Finish();
+            finish.start();
             return;
         }
         Dice dicethread = new Dice();
@@ -97,6 +99,8 @@ public class Game extends Thread
                 {
                     e.printStackTrace();
                 }
+                Finish finish = new Finish();
+                finish.start();
                 return;
             }
             for (Player player: Bukkit.getOnlinePlayers())
@@ -147,6 +151,8 @@ public class Game extends Thread
                     {
                         e.printStackTrace();
                     }
+                    Finish finish = new Finish();
+                    finish.start();
                     return;
                 }
                 for (Player player: Bukkit.getOnlinePlayers())
@@ -432,6 +438,7 @@ public class Game extends Thread
                 {
                     e.printStackTrace();
                 }
+                continue;
             }
             outnumber.clear();
             Dice dicethread1 = new Dice();
@@ -479,6 +486,7 @@ public class Game extends Thread
                     {
                         e.printStackTrace();
                     }
+                    continue;
                 }
                 for (Player player: Bukkit.getOnlinePlayers())
                 {
@@ -528,6 +536,7 @@ public class Game extends Thread
                         {
                             e.printStackTrace();
                         }
+                        continue;
                     }
                     for (Player player: Bukkit.getOnlinePlayers())
                     {
