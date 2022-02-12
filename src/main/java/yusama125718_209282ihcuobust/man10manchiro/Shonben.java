@@ -23,7 +23,6 @@ public class Shonben extends Thread
             {
                 if (!disableplayers.contains(player.getUniqueId()))
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親のターン");
                     player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l"+Bukkit.getOfflinePlayer(parentname).getName()+"§rが§e§lダイスを振っています...§e§kaaa");
                     try
                     {
@@ -55,7 +54,7 @@ public class Shonben extends Thread
                 {
                     if (!disableplayers.contains(player.getUniqueId()))
                     {
-                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(i)).getName() + "§r§l: §e§l"+String.format("%,.0f", betvalue)+"円 → "+String.format("%,.0f", childprice[i] + tax * betvalue)+"円§r§e(うち手数料"+String.format("%,.0f", tax * betvalue)+"円)");
+                        player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(i)).getName() + "§r§l: §c§l"+String.format("%,.0f", betvalue)+"円 §e§l→ §c§l"+String.format("%,.0f", betvalue / 5 + betvalue)+"円§r§e(うち手数料"+String.format("%,.0f", tax * betvalue)+"円)");
                     }
                 }
             }
@@ -63,15 +62,14 @@ public class Shonben extends Thread
         else
         {
             childyaku[k] = 2;
-            parentprice = (betvalue / 5 * 4 - tax * betvalue);
-            parentwin = (betvalue / 5 * 4 );
-            childprice[k] = (betvalue / 5 + betvalue);
+            parentprice = (betvalue / 5 + betvalue - tax * betvalue);
+            parentwin = (betvalue / 5 + betvalue);
+            childprice[k] = (betvalue / 5 * 4);
             for (Player player: Bukkit.getOnlinePlayers())
             {
                 if (!disableplayers.contains(player.getUniqueId()))
                 {
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l子のターン");
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l"+Bukkit.getOfflinePlayer(childplayer.get(k)).getName()+"§rが§e§lダイスを振っています...§e§kaaa");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l"+Bukkit.getOfflinePlayer(childplayer.get(k)).getName()+"§rが§e§lダイスを振っています...§e§kaaa");
                     try
                     {
                         Thread.sleep(2000);
@@ -91,7 +89,8 @@ public class Shonben extends Thread
                         e.printStackTrace();
                     }
                     player.sendMessage("§l[§e§lManchiro§f§l]§r§e§l親の勝ち！§f(倍率:1倍)");
-                    player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§rが§c§lションベン§fをして§l子が" + String.format("%,.0f", betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+String.format("%,.0f", tax * betvalue)+"円)");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§rが§c§lションベン§fをして§l親が" + String.format("%,.0f", betvalue / 5 + betvalue) + "円獲得しました！§7(手数料"+String.format("%,.0f", tax * betvalue)+"円)");
+                    player.sendMessage("§l[§e§lManchiro§f§l]§r§b§l" + Bukkit.getOfflinePlayer(childplayer.get(k)).getName() + "§r§l: §c§l"+String.format("%,.0f", betvalue)+"円 §e§l→ §c§l"+String.format("%,.0f", betvalue / 5 * 4)+"円§r§e(うち手数料0円)");
                 }
             }
             vaultapi.deposit(parentname,parentprice);

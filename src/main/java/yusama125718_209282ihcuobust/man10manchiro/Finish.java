@@ -23,7 +23,7 @@ public class Finish extends Thread
             if (!disableplayers.contains(player.getUniqueId()))
             {
                 player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§rの§l部屋が終了しました");
-                player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§r§l: §e§l"+String.format("%,.0f", betvalue * sitperson)+"円 → "+String.format("%,.0f", parentwin)+"円§r§e(うち手数料"+String.format("%,.0f", parentwin - parentprice)+"円)");
+                player.sendMessage("§l[§e§lManchiro§f§l]§r§a§l" + Bukkit.getOfflinePlayer(parentname).getName() + "§r§l: §c§l"+String.format("%,.0f", betvalue * sitperson)+"円 §e§l→ §c§l"+String.format("%,.0f", parentwin)+"円§r§e(うち手数料"+String.format("%,.0f", parentwin - parentprice)+"円)");
             }
         }
         Date date = new Date();
