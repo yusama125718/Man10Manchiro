@@ -36,6 +36,7 @@ public class Finish extends Thread
         }
         jackpot = manchiro.getConfig().getDouble("jackpot");
         jackpot = jackpot + taxprice;
+        jackpot = Math.floor(jackpot);
         manchiro.getConfig().set("jackpot",jackpot);
         manchiro.saveConfig();
         operation = false;
