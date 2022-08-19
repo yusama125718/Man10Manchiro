@@ -1,9 +1,8 @@
-
 mysql:
   host: "localhost"
   port: "3306"
   user: "root"
-  pass: "yuhei0329"
+  pass: "yusama125718"
   db: "mcr_data"
 
 maxRate: 10000000

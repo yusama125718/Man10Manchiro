@@ -1,7 +1,7 @@
 name: Man10Manchiro
 version: '${project.version}'
-main: yusama125718_209282ihcuobust.man10manchiro.Man10Manchiro
-api-version: 1.17
+main: yusama125718.man10manchiro.Man10Manchiro
+api-version: 1.19
 
 commands:
   mcr:
